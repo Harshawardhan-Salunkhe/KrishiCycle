@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compost Companion - Your Guide to Rich Soil</title>
+    <style>
+    /* --- Google Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* --- CSS Variables for Professional Theme --- */
+:root {
+    --primary-color: #2a9d8f;
+    --primary-hover-color: #268a7e;
+    --dark-green-color: #283618;
+    --text-color: #555;
+    --card-bg-color: #ffffff;
+    --page-bg-color: #f8f9fa;
+    --border-color: #dee2e6;
+    --danger-color: #e63946;
+    --danger-hover-color: #d62828;
+    --font-family: 'Poppins', sans-serif;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --border-radius: 8px;
+}
+
+/* --- General Body & Main Container --- */
+body {
+    font-family: var(--font-family);
+    line-height: 1.7;
+    margin: 0;
+    background-color: var(--page-bg-color);
+    color: var(--text-color);
+    overflow-x: hidden;
+}
+
+main {
+    max-width: 850px;
+    margin: 30px auto;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, legend {
+    color: var(--dark-green-color);
+    font-weight: 600;
+}
+h1 { font-size: 2.2rem; }
+h2 { font-size: 1.8rem; margin-bottom: 10px; }
+h3 { font-size: 1.3rem; }
+p { color: var(--text-color); }
+
+
+/* --- Splash Screen & Animation --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--dark-green-color);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+}
+
+.splash-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Dark overlay for better text readability */
+.splash-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.splash-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Changed to cover for a fuller look */
+    display: block;
+    animation: zoomIn 1.5s ease-out forwards;
+    opacity: 0.7;
+}
+
+.splash-title, .splash-subtitle {
+    position: relative;
+    z-index: 10;
+    text-shadow: 1px 1px 8px rgba(0, 0, 0, 0.8);
+}
+.splash-title { font-size: 3rem; animation: fadeIn 2s ease-in; }
+.splash-subtitle { position: absolute; bottom: 50px; width: 100%; font-size: 1.5rem; animation: fadeIn 2.5s ease-in; color: #fff;}
+
+@keyframes zoomIn { from { transform: scale(1.1); opacity: 0; } to { transform: scale(1); opacity: 0.7; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+
+/* --- Login & Listing Forms --- */
+#login-screen, #add-listing-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+#auth-container, #listing-form {
+    width: 100%;
+    max-width: 450px;
+    padding: 40px;
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    text-align: center;
+}
+
+#listing-form { text-align: left; }
+#listing-form label { display: block; margin-bottom: 5px; font-weight: 600; font-size: 0.9em; }
+
+#auth-form input, #listing-form input, #listing-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-sizing: border-box;
+    font-family: var(--font-family);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+#auth-form input:focus, #listing-form input:focus, #listing-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(42, 157, 143, 0.2);
+}
+
+#auth-buttons { display: flex; gap: 10px; margin-top: 10px; }
+#auth-message { margin-top: 15px; font-weight: bold; min-height: 20px; }
+#listing-preview { max-width: 100%; height: auto; margin-top: 10px; border: 1px solid var(--border-color); border-radius: var(--border-radius); }
+
+
+/* --- Header & Language Switcher --- */
+#intro-screen header {
+    text-align: center;
+    padding: 30px;
+    background-color: #e8f5e9; /* Very light green */
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+    position: relative;
+    border: 1px solid #d1e7d3;
+}
+#user-header { display: flex; justify-content: flex-end; align-items: center; position: absolute; top: 15px; right: 15px; width: calc(100% - 30px); }
+#welcome-message { margin-right: auto; font-weight: 600; color: var(--dark-green-color); }
+
+#language-switcher { display: flex; gap: 5px; margin-right: 15px; }
+#language-switcher button { background-color: transparent; color: var(--dark-green-color); border: 1px solid #b8d8be; padding: 4px 8px; border-radius: 20px; cursor: pointer; font-size: 0.8em; width: auto; font-family: var(--font-family); transition: all 0.2s ease; }
+#language-switcher button:hover { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+
+/* --- Logout Button (Size Reduced) --- */
+#logout-button {
+    width: auto;
+    padding: 4px 8px; /* Reduced padding */
+    font-size: 0.8em;  /* Reduced font size */
+    background-color: var(--danger-color);
+    border-radius: 20px; /* Matched to language buttons */
+    margin-left: 10px;
+}
+
+#logout-button:hover {
+    background-color: var(--danger-hover-color);
+}
+
+
+/* --- Cards (Info, Action, Product) --- */
+.card-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 25px; margin-top: 25px; }
+.info-card, .action-card, .product-card {
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+.product-card { padding: 0; cursor: pointer; }
+.info-card:hover, .action-card:hover, .product-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12); }
+.product-image { width: 100%; height: 160px; object-fit: cover; display: block; }
+.info-card h4, .action-card h3, .product-card h4 { color: var(--primary-color); padding: 0 15px; margin-top: 15px; margin-bottom: 10px; }
+.product-card h4 { border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin-left: 15px; margin-right: 15px; }
+.product-card p { flex-grow: 1; font-size: 0.9em; padding: 0 15px; }
+.info-card ul { list-style-type: '🌱 '; padding: 0 15px 15px 40px; text-align: left; }
+.info-card, .action-card { padding: 20px; }
+.product-card .price { font-size: 1.2em; font-weight: 700; color: var(--dark-green-color); margin: 10px 15px 15px; }
+
+
+/* --- Buttons --- */
+button, .action-button {
+    padding: 12px 20px;
+    background-color: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.2s ease;
+    font-family: var(--font-family);
+    margin-top: auto;
+}
+button:hover, .action-button:hover { background-color: var(--primary-hover-color); transform: scale(1.02); }
+.back-button { width: auto; margin-bottom: 20px; background-color: #6c757d; }
+.back-button:hover { background-color: #5a6268; }
+button.secondary { background-color: #829f83; }
+button.secondary:hover { background-color: #6a856b; }
+.delete-button { background-color: var(--danger-color); }
+.delete-button:hover { background-color: var(--danger-hover-color); }
+
+
+/* --- Compost Tool Tabs --- */
+.tab-container { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border-color); margin-bottom: 0; }
+.tab-button {
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-radius: 0;
+    margin-right: 10px;
+    font-size: 1em;
+    font-weight: 600;
+    width: auto;
+    margin-top: 5px;
+}
+.tab-button:hover { color: var(--primary-color); }
+.tab-button.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+.tab-panel { display: none; padding: 25px; border: 1px solid var(--border-color); border-top: none; border-radius: 0 0 var(--border-radius) var(--border-radius); animation: fadeIn 0.5s; }
+.ingredient-columns { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 25px; }
+fieldset { border: 1px solid var(--border-color); border-radius: var(--border-radius); padding: 15px; margin-bottom: 10px; }
+legend { padding: 0 8px; font-weight: 600; font-size: 1.1em; }
+.tab-panel input[type=checkbox] { margin-right: 8px; accent-color: var(--primary-color); }
+.tab-panel label { display: inline-block; margin-bottom: 8px; font-size: 0.9em; }
+
+
+/* --- Other Elements --- */
+hr { border: 0; border-top: 1px solid var(--border-color); margin: 30px 0; }
+#compost-result { margin-top: 25px; padding: 25px; border: 2px dashed var(--border-color); border-radius: var(--border-radius); background-color: #fdfdfd; }
+.market-section h3 { width: 100%; text-align: left; border-bottom: 2px solid var(--primary-color); padding-bottom: 10px; margin-top: 40px; }
+
+/* --- Details Screen --- */
+.details-layout { display: flex; flex-wrap: wrap; gap: 30px; margin-top: 20px; }
+.details-image { flex: 1; min-width: 300px; max-height: 400px; object-fit: cover; border-radius: var(--border-radius); }
+.details-info { flex: 1; min-width: 300px; }
+.details-name { font-size: 2.5rem; margin-top: 0; margin-bottom: 10px; }
+.details-price { font-size: 2rem; font-weight: 700; color: var(--primary-color); margin-bottom: 20px; }
+.details-description { font-size: 1.1em; line-height: 1.8; margin-bottom: 30px; }
+.details-buy-button { width: 100%; padding: 15px; font-size: 1.2em; }
+</style>
+</head>
+
+<body>
+
+    <div id="splash-screen">
+        <div class="splash-content">
+            <img src="KRISHICYCLEAi.jpg" alt="KRISHICYCLE Ai Logo" class="splash-logo">
+            
+        </div>
+    </div>
+
+    <main style="display: none;">
+        <div id="login-screen">
+            <div id="auth-container">
+                <h2 data-translate-key="welcomeBack">Welcome Back!</h2>
+                <p data-translate-key="loginPrompt">Please log in or register to continue.</p>
+                <form id="auth-form">
+                    <input type="text" id="username" name="username" placeholder="Enter your username" data-translate-key="usernamePlaceholder" required>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" data-translate-key="passwordPlaceholder" required>
+                    <div id="auth-buttons">
+                        <button type="button" onclick="handleLogin()" data-translate-key="login">Login</button>
+                        <button type="button" class="secondary" onclick="handleRegister()" data-translate-key="register">Register</button>
+                    </div>
+                    <p id="auth-message"></p>
+                </form>
+            </div>
+        </div>
+        
+        <div id="intro-screen" style="display: none;">
+            <header>
+                <div id="user-header">
+                    <div id="language-switcher">
+                        <button onclick="setLanguage('en')">English</button>
+                        <button onclick="setLanguage('mr')">मराठी</button>
+                        <button onclick="setLanguage('hi')">हिन्दी</button>
+                    </div>
+                    <span id="welcome-message"></span>
+                    <button id="logout-button" onclick="handleLogout()" data-translate-key="logout">Logout</button>
+                </div>
+                <h1 data-translate-key="welcomeToApp">Welcome to the Compost Companion</h1>
+                <p data-translate-key="welcomeDescription">Turn your kitchen scraps into "black gold" for your garden. Get a personalized guide or browse our compost market.</p>
+            </header>
+            <div id="action-grid" class="card-container">
+                <div class="action-card">
+                    <h3 data-translate-key="buyTitle">🛒 Buy Natural Compost</h3>
+                    <p data-translate-key="buyDescription">Need nutrient-rich soil now? Browse our vast selection of organic composts.</p>
+                    <button class="action-button" onclick="showScreen('buy-screen')" data-translate-key="goToMarket">Go to Market</button>
+                </div>
+                 <div class="action-card">
+                    <h3 data-translate-key="sellTitle">💰 Sell Your Compost</h3>
+                    <p data-translate-key="sellDescription">Have extra compost? List it on our market for fellow gardeners in India.</p>
+                    <button class="action-button" onclick="showScreen('sale-screen')" data-translate-key="viewListings">View Your Listings</button>
+                </div>
+                <div class="action-card">
+                    <h3 data-translate-key="makeTitle">🛠️ Make Compost</h3>
+                    <p data-translate-key="makeDescription">Create your own perfect compost blend with our step-by-step tool.</p>
+                    <button class="action-button" onclick="showScreen('tool-screen')" data-translate-key="startComposting">Start Composting</button>
+                </div>
+            </div>
+            <hr>
+            <div id="about-us" class="card-container">
+                <div class="info-card">
+                    <h4 data-translate-key="whatToCompost">What Can I Compost?</h4>
+                    <ul>
+                        <li data-translate-key="compostItem1">Fruit & Veggie Scraps</li>
+                        <li data-translate-key="compostItem2">Egg Shells (crushed)</li>
+                        <li data-translate-key="compostItem3">Coffee Grounds & Tea Bags</li>
+                        <li data-translate-key="compostItem4">Shredded Paper & Cardboard</li>
+                        <li data-translate-key="compostItem5">Yard Trimmings & Leaves</li>
+                    </ul>
+                </div>
+                <div class="info-card">
+                    <h4 data-translate-key="whatToAvoid">What Should I Avoid?</h4>
+                    <ul>
+                        <li data-translate-key="avoidItem1">Meat, Fish & Bones</li>
+                        <li data-translate-key="avoidItem2">Dairy Products</li>
+                        <li data-translate-key="avoidItem3">Oils, Fats & Grease</li>
+                        <li data-translate-key="avoidItem4">Diseased Plants</li>
+                        <li data-translate-key="avoidItem5">Pet Waste</li>
+                    </ul>
+                </div>
+                 <div class="info-card" id="team-info">
+                    <h4 data-translate-key="ourMission">Our Mission</h4>
+                    <p style="text-align: left;" data-translate-key="missionStatement">
+                        Hi we are The Cracked HAMS from VIT Pune, dedicated to use our tech for sustainable living accessible to everyone. Our mission in this project is to empower individuals to enrich the soil, grow healthy food, and reduce waste, one compost pile at a time.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div id="tool-screen" style="display: none;">
+            <button class="back-button" onclick="showScreen('intro-screen')" data-translate-key="backToHome">← Back to Home</button>
+            <h2 data-translate-key="createRecipeTitle">Create Your Custom Compost Recipe</h2>
+            <p data-translate-key="createRecipeDescription">First, select the type of plant you're growing. Then, check the ingredients you have available.</p>
+            
+            <div id="compost-tool-container">
+                <div class="tab-container">
+                    <button class="tab-button" onclick="openTab(event, 'leafy')" data-plant-type="leafy" data-translate-key="tabLeafy">🌿 Leafy Vegetables</button>
+                    <button class="tab-button" onclick="openTab(event, 'root')" data-plant-type="root" data-translate-key="tabRoot">🥕 Root Crops</button>
+                    <button class="tab-button" onclick="openTab(event, 'fruiting')" data-plant-type="fruiting" data-translate-key="tabFruiting">🍅 Fruiting Crops</button>
+                    <button class="tab-button" onclick="openTab(event, 'flowers')" data-plant-type="flowers" data-translate-key="tabFlowers">🌸 Flower Gardens</button>
+                    <button class="tab-button" onclick="openTab(event, 'green')" data-plant-type="green" data-translate-key="tabGreenCrops">🌾 Green Crops</button>
+                    <button class="tab-button" onclick="openTab(event, 'trees')" data-plant-type="trees" data-translate-key="tabFruitTrees">🌳 Fruit Trees</button>
+                    <button class="tab-button" onclick="openTab(event, 'general')" data-plant-type="general" data-translate-key="tabGeneral">🌍 General Purpose</button>
+                </div>
+
+                <form id="ingredient-form">
+                    <div id="leafy" class="tab-panel"></div>
+                    <div id="root" class="tab-panel"></div>
+                    <div id="fruiting" class="tab-panel"></div>
+                    <div id="flowers" class="tab-panel"></div>
+                    <div id="green" class="tab-panel"></div>
+                    <div id="trees" class="tab-panel"></div>
+                     <div id="general" class="tab-panel"></div>
+
+                    <button type="button" onclick="generateCompostGuide()" data-translate-key="getRecipeBtn">Get Custom Compost Recipe</button>
+                </form>
+            </div>
+
+            <div id="output-section">
+                <div id="compost-result">
+                    <p data-translate-key="guidePlaceholder">Your personalized guide will appear here.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div id="buy-screen" style="display:none;">
+            <button class="back-button" onclick="showScreen('intro-screen')" data-translate-key="backToHome">← Back to Home</button>
+            <h2 data-translate-key="marketTitle">🛒 Compost Market</h2>
+            <div class="market-section">
+                <h3 data-translate-key="standardBlends">Standard Compost Blends</h3>
+                <div id="standard-blends-container" class="card-container"></div>
+            </div>
+            <div class="market-section">
+                <h3 data-translate-key="vermicompost">Vermicompost (Worm Castings)</h3>
+                <div id="vermicompost-container" class="card-container"></div>
+            </div>
+            <div class="market-section">
+                <h3 data-translate-key="manuresAmendments">Manures & Amendments</h3>
+                <div id="manures-container" class="card-container"></div>
+            </div>
+        </div>
+        
+        <div id="details-screen" style="display:none;">
+            <button id="details-back-button" class="back-button" data-translate-key="backButton">← Back</button>
+            <div class="details-layout">
+                <img id="details-image" src="" alt="Product image" class="details-image">
+                <div class="details-info">
+                    <h2 id="details-name" class="details-name">Product Name</h2>
+                    <p id="details-price" class="details-price">₹000 / unit</p>
+                    <p id="details-description" class="details-description">Full product description goes here.</p>
+                    <button id="details-action-button" class="details-buy-button">Buy Now</button>
+                    <div id="seller-actions" style="display: none; margin-top: 20px;">
+                        <button id="delete-listing-button" class="delete-button">Delete Listing</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="sale-screen" style="display:none;">
+            <button class="back-button" onclick="showScreen('intro-screen')" data-translate-key="backToHome">← Back to Home</button>
+            <h2 data-translate-key="sellPageTitle">💰 Sell Your Compost</h2>
+            <p data-translate-key="sellPageDescription">Click on a category to see its details and create a new listing for your homemade compost.</p>
+             <div class="market-section">
+                <h3 data-translate-key="standardBlends">Standard Compost Blends</h3>
+                <div id="sell-standard-blends-container" class="card-container"></div>
+            </div>
+            <div class="market-section">
+                <h3 data-translate-key="vermicompost">Vermicompost (Worm Castings)</h3>
+                <div id="sell-vermicompost-container" class="card-container"></div>
+            </div>
+            <div class="market-section">
+                <h3 data-translate-key="manuresAmendments">Manures & Amendments</h3>
+                <div id="sell-manures-container" class="card-container"></div>
+            </div>
+        </div>
+
+        <div id="add-listing-screen" style="display:none;">
+            <button class="back-button" onclick="showScreen('sale-screen')" data-translate-key="backToListings">← Back to Listings</button>
+            <h2 data-translate-key="newListingTitle">Create a New Listing</h2>
+            <form id="listing-form">
+                <input type="hidden" id="listing-category" name="category">
+                
+                <label for="listing-name" data-translate-key="listingNameLabel">Product Name:</label>
+                <input type="text" id="listing-name" name="name" required>
+                
+                <label for="listing-price" data-translate-key="listingPriceLabel">Price (e.g., ₹249 / 5kg):</label>
+                <input type="text" id="listing-price" name="price" required>
+                
+                <label for="listing-description" data-translate-key="listingDescriptionLabel">Description:</label>
+                <textarea id="listing-description" name="description" rows="4" required></textarea>
+                
+                <label for="listing-image" data-translate-key="listingImageLabel">Image (Optional):</label>
+                <input type="file" id="listing-image" name="image" accept="image/*" onchange="previewImage(event)">
+                <img id="listing-preview" src="" alt="Image Preview" style="display: none;">
+                
+                <button type="button" onclick="handleAddItem()" data-translate-key="addItemButton">Add Item to Market</button>
+            </form>
+        </div>
+
+    </main>
+    
+    <script>
+        // --- INITIAL PRODUCTS (Default items) ---
+const initialProducts = [{
+    id: "all-purpose",
+    category: "standard",
+    name: "All-Purpose Blend",
+    image: "all-purpose.png",
+    price: "₹249 / 5kg",
+    description: 'A perfectly balanced blend for general garden use. Enriched with essential nutrients, it improves soil structure, aeration, and water retention for healthier plants all around your garden.'
+}, {
+    id: "veg-mix",
+    category: "standard",
+    name: "Vegetable Growth Mix",
+    image: "vegetable-mix.png",
+    price: "₹299 / 5kg",
+    description: "Specially formulated with high Phosphorus (P) and Potassium (K) content to support strong root development and promote abundant fruiting in vegetables like tomatoes, peppers, and cucumbers."
+}, {
+    id: "leafy-fuel",
+    category: "standard",
+    name: "Leafy Green Fuel",
+    image: "leafy-greens.png",
+    price: "₹279 / 5kg",
+    description: "A nitrogen-rich mix designed to fuel rapid, lush growth in leafy greens such as lettuce, spinach, and kale. Ensures vibrant, healthy, and tasty leaves."
+}, {
+    id: "bloom-mix",
+    category: "standard",
+    name: "Vibrant Bloom Mix",
+    image: "flower-mix.png",
+    price: "₹289 / 5kg",
+    description: "The ideal compost for flowering plants. This blend encourages strong stems and promotes the growth of abundant, colorful, and long-lasting blooms."
+}, {
+    id: "vermicompost",
+    category: "vermicompost",
+    name: "Pure Earthworm Castings",
+    image: "vermicompost.png",
+    price: "₹399 / 5kg",
+    description: 'Often called "black gold," these nutrient-dense earthworm castings are a superior all-natural soil conditioner. They are rich in microbes and improve nutrient absorption.'
+}, {
+    id: "cow-manure",
+    category: "manures",
+    name: "Aged Cow Manure",
+    image: "cow-manure.png",
+    price: "₹199 / 5kg",
+    description: "A classic, all-rounder fertilizer. Our cow manure is fully composted and aged to eliminate pathogens and provide a gentle, slow release of essential nutrients."
+}, {
+    id: "neem-cake",
+    category: "manures",
+    name: "Neem Cake (Neem Khali)",
+    image: "neem-cake.png",
+    price: "₹199 / 1kg",
+    description: "A valuable organic amendment that acts as both a fertilizer and a natural pest repellent. It protects plant roots from nematodes and soil-borne pests."
+}, {
+    id: "cocopeat",
+    category: "manures",
+    name: "Cocopeat Block",
+    image: "cocopeat.png",
+    price: "₹299 / 5kg block",
+    description: "An excellent soil conditioner made from coconut husks. Cocopeat improves aeration and is renowned for its exceptional water retention capabilities, reducing watering frequency."
+}];
+
+// --- LANGUAGE TRANSLATIONS ---
+const translations = {
+    en: {
+        splashSubtitle: "Cultivating a Greener Tomorrow...",
+        welcomeBack: "Welcome Back!",
+        loginPrompt: "Please log in or register to continue.",
+        usernamePlaceholder: "Enter your username",
+        passwordPlaceholder: "Enter your password",
+        login: "Login",
+        register: "Register",
+        logout: "Logout",
+        welcomeToApp: "Welcome to the Compost Companion",
+        welcomeDescription: "Turn your kitchen scraps into \"black gold\" for your garden. Get a personalized guide or browse our compost market.",
+        buyTitle: "🛒 Buy Natural Compost",
+        buyDescription: "Need nutrient-rich soil now? Browse our vast selection of organic composts.",
+        goToMarket: "Go to Market",
+        sellTitle: "💰 Sell Your Compost",
+        sellDescription: "Have extra compost? List it on our market for fellow gardeners in India.",
+        viewListings: "View Your Listings",
+        makeTitle: "🛠️ Make Compost",
+        makeDescription: "Create your own perfect compost blend with our step-by-step tool.",
+        startComposting: "Start Composting",
+        whatToCompost: "What Can I Compost?",
+        compostItem1: "Fruit & Veggie Scraps",
+        compostItem2: "Egg Shells (crushed)",
+        compostItem3: "Coffee Grounds & Tea Bags",
+        compostItem4: "Shredded Paper & Cardboard",
+        compostItem5: "Yard Trimmings & Leaves",
+        whatToAvoid: "What Should I Avoid?",
+        avoidItem1: "Meat, Fish & Bones",
+        avoidItem2: "Dairy Products",
+        avoidItem3: "Oils, Fats & Grease",
+        avoidItem4: "Diseased Plants",
+        avoidItem5: "Pet Waste",
+        ourMission: "Our Mission",
+        missionStatement: "Hi we are The Cracked HAMS from VIT Pune, dedicated to use our tech for sustainable living accessible to everyone. Our mission in this project is to empower individuals to enrich the soil, grow healthy food, and reduce waste, one compost pile at a time.",
+        backToHome: "← Back to Home",
+        createRecipeTitle: "Create Your Custom Compost Recipe",
+        createRecipeDescription: "First, select the type of plant you're growing. Then, check the ingredients you have available.",
+        getRecipeBtn: "Get Custom Compost Recipe",
+        guidePlaceholder: "Your personalized guide will appear here.",
+        marketTitle: "🛒 Compost Market",
+        standardBlends: "Standard Compost Blends",
+        vermicompost: "Vermicompost (Worm Castings)",
+        manuresAmendments: "Manures & Amendments",
+        backButton: "← Back",
+        sellPageTitle: "💰 Sell Your Compost",
+        sellPageDescription: "Click on a category to see its details and create a new listing for your homemade compost.",
+        tabLeafy: "🌿 Leafy Vegetables",
+        tabRoot: "🥕 Root Crops",
+        tabFruiting: "🍅 Fruiting Crops",
+        tabFlowers: "🌸 Flower Gardens",
+        tabGreenCrops: "🌾 Green Crops",
+        tabFruitTrees: "🌳 Fruit Trees",
+        tabGeneral: "🌍 General Purpose",
+        backToListings: "← Back to Listings",
+        newListingTitle: "Create a New Listing",
+        listingNameLabel: "Product Name:",
+        listingPriceLabel: "Price (e.g., ₹249 / 5kg):",
+        listingDescriptionLabel: "Description:",
+        listingImageLabel: "Image (Optional):",
+        addItemButton: "Add Item to Market",
+        // Compost Guide Translations
+        guideRecipeTitle: "Your Custom Recipe:",
+        guidePrimaryGoal: "Primary Goal:",
+        guideYourRecipe: "Your Compost Recipe",
+        guideLayeringRatio: "Layering Ratio:",
+        guideGreens: "Your Green (Nitrogen) Ingredients:",
+        guideBrowns: "Your Brown (Carbon) Ingredients:",
+        guideAdditives: "Your Special Additives:",
+        guidePrepTitle: "Detailed Ingredient Preparation",
+        guideProcessTitle: "Step-by-Step Process",
+        guideStep1: "Build the Foundation.",
+        guideStep2: "Layer Like a Lasagna.",
+        guideStep3_manure: "Activate the Pile.",
+        guideStep4: "Cover & Rest.",
+        guideStep5: "Mix & Shake Weekly.",
+        guideStep6: "Check for Readiness.",
+        guideTipsTitle: "Ingredient Usage Notes",
+        guideWarningsTitle: "🛑 IMPORTANT WARNINGS:"
+    },
+    mr: {
+        splashSubtitle: "उद्याच्या हिरव्या भविष्यासाठी...",
+        welcomeBack: "पुन्हा स्वागत आहे!",
+        loginPrompt: "कृपया पुढे जाण्यासाठी लॉग इन किंवा नोंदणी करा.",
+        usernamePlaceholder: "तुमचे वापरकर्तानाव प्रविष्ट करा",
+        passwordPlaceholder: "तुमचा पासवर्ड प्रविष्ट करा",
+        login: "लॉग इन करा",
+        register: "नोंदणी करा",
+        logout: "लॉग आउट",
+        welcomeToApp: "कंपोस्ट कंपेनियनमध्ये आपले स्वागत आहे",
+        welcomeDescription: "तुमच्या स्वयंपाकघरातील कचऱ्याचे तुमच्या बागेसाठी 'काळे सोने' बनवा. वैयक्तिकृत मार्गदर्शक मिळवा किंवा आमचे कंपोस्ट मार्केट ब्राउझ करा.",
+        buyTitle: "🛒 नैसर्गिक कंपोस्ट खरेदी करा",
+        buyDescription: "आत्ताच पौष्टिक माती हवी आहे? आमच्या सेंद्रिय कंपोस्टच्या विशाल निवडीमधून ब्राउझ करा.",
+        goToMarket: "मार्केटमध्ये जा",
+        sellTitle: "💰 तुमचे कंपोस्ट विका",
+        sellDescription: "जास्त कंपोस्ट आहे का? भारतातील सहकारी गार्डनर्ससाठी आमच्या मार्केटमध्ये सूचीबद्ध करा.",
+        viewListings: "तुमची सूची पहा",
+        makeTitle: "🛠️ कंपोस्ट बनवा",
+        makeDescription: "आमच्या स्टेप-बाय-स्टेप टूलद्वारे तुमचे स्वतःचे परिपूर्ण कंपोस्ट मिश्रण तयार करा.",
+        startComposting: "कंपोस्टिंग सुरू करा",
+        whatToCompost: "मी काय कंपोस्ट करू शकतो?",
+        compostItem1: "फळे आणि भाज्यांचे अवशेष",
+        compostItem2: "अंड्याचे कवच (चूर्ण)",
+        compostItem3: "कॉफी ग्राउंड्स आणि चहाच्या पिशव्या",
+        compostItem4: "फाटलेला कागद आणि कार्डबोर्ड",
+        compostItem5: "गवताचे तुकडे आणि पाने",
+        whatToAvoid: "मी काय टाळावे?",
+        avoidItem1: "मांस, मासे आणि हाडे",
+        avoidItem2: "दुग्धजन्य पदार्थ",
+        avoidItem3: "तेल, चरबी आणि ग्रीस",
+        avoidItem4: "रोगी झाडे",
+        avoidItem5: "पाळीव प्राण्यांची विष्ठा",
+        ourMission: "आमचे ध्येय",
+        missionStatement: "आम्ही VIT पुणे येथील 'द क्रॅक्ड हॅम्स' आहोत, जे तंत्रज्ञानाचा वापर करून प्रत्येकासाठी शाश्वत जीवनशैली सुलभ करण्यासाठी समर्पित आहोत. या प्रकल्पातील आमचे ध्येय व्यक्तींना माती समृद्ध करण्यासाठी, निरोगी अन्न वाढवण्यासाठी आणि कचरा कमी करण्यासाठी सक्षम करणे आहे, एका वेळी एक कंपोस्ट ढिगारा.",
+        backToHome: "← घरी परत जा",
+        createRecipeTitle: "तुमची सानुकूल कंपोस्ट रेसिपी तयार करा",
+        createRecipeDescription: "प्रथम, तुम्ही कोणत्या प्रकारचे रोप वाढवत आहात ते निवडा. नंतर, तुमच्याकडे उपलब्ध असलेले घटक तपासा.",
+        getRecipeBtn: "सानुकूल कंपोस्ट रेसिपी मिळवा",
+        guidePlaceholder: "तुमचे वैयक्तिकृत मार्गदर्शक येथे दिसेल.",
+        marketTitle: "🛒 कंपोस्ट मार्केट",
+        standardBlends: "मानक कंपोस्ट मिश्रण",
+        vermicompost: "गांडूळ खत (वर्मीकंपोस्ट)",
+        manuresAmendments: "खते आणि सुधारक",
+        backButton: "← मागे",
+        sellPageTitle: "💰 तुमचे कंपोस्ट विका",
+        sellPageDescription: "त्याचे तपशील पाहण्यासाठी आणि तुमच्या घरगुती कंपोस्टसाठी नवीन सूची तयार करण्यासाठी श्रेणीवर क्लिक करा.",
+        tabLeafy: "🌿 पालेभाज्या",
+        tabRoot: "🥕 कंदमुळे",
+        tabFruiting: "🍅 फळभाज्या",
+        tabFlowers: "🌸 फुलांची बाग",
+        tabGreenCrops: "🌾 हिरवी पिके",
+        tabFruitTrees: "🌳 फळझाडे",
+        tabGeneral: "🌍 सर्वसाधारण उद्देश",
+        backToListings: "← सूचीवर परत जा",
+        newListingTitle: "नवीन सूची तयार करा",
+        listingNameLabel: "उत्पादनाचे नाव:",
+        listingPriceLabel: "किंमत (उदा., ₹२४९ / ५ किलो):",
+        listingDescriptionLabel: "वर्णन:",
+        listingImageLabel: "प्रतिमा (ऐच्छिक):",
+        addItemButton: "मार्केटमध्ये वस्तू जोडा",
+        // Compost Guide Translations (Marathi)
+        guideRecipeTitle: "तुमची सानुकूल रेसिपी:",
+        guidePrimaryGoal: "प्राथमिक ध्येय:",
+        guideYourRecipe: "तुमची कंपोस्ट रेसिपी",
+        guideLayeringRatio: "स्तरांचे प्रमाण:",
+        guideGreens: "तुमचे हिरवे (नायट्रोजन) घटक:",
+        guideBrowns: "तुमचे तपकिरी (कार्बन) घटक:",
+        guideAdditives: "तुमचे विशेष घटक:",
+        guidePrepTitle: "घटकांची तपशीलवार तयारी",
+        guideProcessTitle: "पायरी-पायरी प्रक्रिया",
+        guideStep1: "पाया तयार करा.",
+        guideStep2: "लाझान्यासारखे थर लावा.",
+        guideStep3_manure: "कंपोस्ट सक्रिय करा.",
+        guideStep4: "झाकून ठेवा आणि विश्रांती द्या.",
+        guideStep5: "साप्ताहिक मिश्रण करा.",
+        guideStep6: "तयारी तपासा.",
+        guideTipsTitle: "घटक वापराच्या टिपा",
+        guideWarningsTitle: "🛑 महत्त्वाच्या सूचना:"
+    },
+    hi: {
+        splashSubtitle: "एक हरे-भरे कल का निर्माण...",
+        welcomeBack: "वापस स्वागत है!",
+        loginPrompt: "कृपया जारी रखने के लिए लॉग इन या रजिस्टर करें।",
+        usernamePlaceholder: "अपना उपयोगकर्ता नाम दर्ज करें",
+        passwordPlaceholder: "अपना पासवर्ड दर्ज करें",
+        login: "लॉग इन करें",
+        register: "रजिस्टर करें",
+        logout: "लॉगआउट",
+        welcomeToApp: "कम्पोस्ट कंपेनियन में आपका स्वागत है",
+        welcomeDescription: "अपने रसोई के कचरे को अपने बगीचे के लिए 'काला सोना' में बदलें। एक व्यक्तिगत गाइड प्राप्त करें या हमारे कम्पोस्ट बाजार को ब्राउज़ करें।",
+        buyTitle: "🛒 प्राकृतिक खाद खरीदें",
+        buyDescription: "अभी पोषक तत्वों से भरपूर मिट्टी चाहिए? हमारे जैविक खाद के विशाल चयन को ब्राउज़ करें।",
+        goToMarket: "बाजार जाएं",
+        sellTitle: "💰 अपनी खाद बेचें",
+        sellDescription: "क्या आपके पास अतिरिक्त खाद है? इसे भारत में साथी बागवानों के लिए हमारे बाजार में सूचीबद्ध करें।",
+        viewListings: "अपनी लिस्टिंग देखें",
+        makeTitle: "🛠️ खाद बनाएं",
+        makeDescription: "हमारे स्टेप-बाय-स्टेप टूल से अपना खुद का आदर्श खाद मिश्रण बनाएं।",
+        startComposting: "कम्पोस्टिंग शुरू करें",
+        whatToCompost: "मैं क्या कम्पोस्ट कर सकता हूँ?",
+        compostItem1: "फल और सब्जी के छिलके",
+        compostItem2: "अंडे के छिलके (कुचले हुए)",
+        compostItem3: "कॉफी ग्राउंड्स और चाय की थैलियाँ",
+        compostItem4: "कटे हुए कागज और कार्डबोर्ड",
+        compostItem5: "यार्ड की कतरनें और पत्तियाँ",
+        whatToAvoid: "मुझे क्या नहीं डालना चाहिए?",
+        avoidItem1: "मांस, मछली और हड्डियाँ",
+        avoidItem2: "डेयरी उत्पाद",
+        avoidItem3: "तेल, वसा और ग्रीस",
+        avoidItem4: "बीमार पौधे",
+        avoidItem5: "पालतू जानवरों का मल",
+        ourMission: "हमारा मिशन",
+        missionStatement: "नमस्ते, हम वीआईटी पुणे से 'द क्रैक्ड हैम्स' हैं, जो हर किसी के लिए स्थायी जीवन को सुलभ बनाने के लिए अपनी तकनीक का उपयोग करने के लिए समर्पित हैं। इस परियोजना में हमारा मिशन व्यक्तियों को मिट्टी को समृद्ध करने, स्वस्थ भोजन उगाने और कचरे को कम करने के लिए सशक्त बनाना है, एक समय में एक कम्पोस्ट का ढेर।",
+        backToHome: "← होम पर वापस जाएं",
+        createRecipeTitle: "अपनी कस्टम कम्पोस्ट रेसिपी बनाएं",
+        createRecipeDescription: "पहले, आप जिस प्रकार का पौधा उगा रहे हैं उसे चुनें। फिर, आपके पास उपलब्ध सामग्री की जाँच करें।",
+        getRecipeBtn: "कस्टम कम्पोस्ट रेसिपी प्राप्त करें",
+        guidePlaceholder: "आपका व्यक्तिगत गाइड यहाँ दिखाई देगा।",
+        marketTitle: "🛒 कम्पोस्ट बाजार",
+        standardBlends: "मानक कम्पोस्ट मिश्रण",
+        vermicompost: "वर्मीकम्पोस्ट (केंचुआ खाद)",
+        manuresAmendments: "खाद और मिट्टी सुधारक",
+        backButton: "← वापस",
+        sellPageTitle: "💰 अपनी खाद बेचें",
+        sellPageDescription: "विवरण देखने और अपनी घर की बनी खाद के लिए एक नई लिस्टिंग बनाने के लिए एक श्रेणी पर क्लिक करें।",
+        tabLeafy: "🌿 पत्तेदार सब्जियां",
+        tabRoot: "🥕 जड़ वाली फसलें",
+        tabFruiting: "🍅 फल देने वाली फसलें",
+        tabFlowers: "🌸 फूलों के बगीचे",
+        tabGreenCrops: "🌾 हरी फसलें",
+        tabFruitTrees: "🌳 फलों के पेड़",
+        tabGeneral: "🌍 सामान्य उद्देश्य",
+        backToListings: "← लिस्टिंग पर वापस जाएं",
+        newListingTitle: "एक नई लिस्टिंग बनाएं",
+        listingNameLabel: "उत्पाद का नाम:",
+        listingPriceLabel: "मूल्य (उदा., ₹249 / 5 किग्रा):",
+        listingDescriptionLabel: "विवरण:",
+        listingImageLabel: "छवि (वैकल्पिक):",
+        addItemButton: "बाजार में आइटम जोड़ें",
+        // Compost Guide Translations (Hindi)
+        guideRecipeTitle: "आपकी कस्टम रेसिपी:",
+        guidePrimaryGoal: "प्राथमिक लक्ष्य:",
+        guideYourRecipe: "आपकी कम्पोस्ट रेसिपी",
+        guideLayeringRatio: "परतों का अनुपात:",
+        guideGreens: "आपकी हरी (नाइट्रोजन) सामग्री:",
+        guideBrowns: "आपकी भूरी (कार्बन) सामग्री:",
+        guideAdditives: "आपके विशेष योजक:",
+        guidePrepTitle: "सामग्री की विस्तृत तैयारी",
+        guideProcessTitle: "चरण-दर-चरण प्रक्रिया",
+        guideStep1: "नींव तैयार करें।",
+        guideStep2: "लज़ान्या की तरह परतें बिछाएं।",
+        guideStep3_manure: "ढेर को सक्रिय करें।",
+        guideStep4: "ढककर आराम करने दें।",
+        guideStep5: "साप्ताहिक रूप से मिलाएं।",
+        guideStep6: "तैयारी की जाँच करें।",
+        guideTipsTitle: "सामग्री उपयोग नोट्स",
+        guideWarningsTitle: "🛑 महत्वपूर्ण चेतावनियाँ:"
+    }
+};
+
+// --- INITIALIZATION ---
+window.addEventListener("DOMContentLoaded", () => {
+    const splashScreen = document.getElementById("splash-screen");
+    const mainContent = document.querySelector("main");
+    setTimeout(() => {
+        splashScreen.style.opacity = "0";
+        setTimeout(() => {
+            splashScreen.style.display = "none";
+            mainContent.style.display = "block";
+            showScreen('login-screen');
+        }, 500);
+    }, 3000);
+    
+    // Build the compost tool structure ONCE.
+    populateIngredientTabs();
+
+    // Set initial language from storage or default to English. This will translate the page.
+    const savedLang = localStorage.getItem('language') || 'en';
+    setLanguage(savedLang);
+
+    // Prepare other dynamic content
+    renderMarketplace();
+    renderSellPage();
+    document.querySelector('.tab-button').click();
+});
+
+
+// --- LANGUAGE FUNCTIONS ---
+function setLanguage(lang) {
+    localStorage.setItem('language', lang);
+    translatePage();
+}
+
+function translatePage() {
+    const lang = localStorage.getItem('language') || 'en';
+    const translationSet = translations[lang];
+
+    // Translate all static elements with a data-translate-key
+    document.querySelectorAll('[data-translate-key]').forEach(element => {
+        const key = element.getAttribute('data-translate-key');
+        if (translationSet[key]) {
+            if (element.placeholder) {
+                element.placeholder = translationSet[key];
+            } else {
+                element.innerHTML = translationSet[key];
+            }
+        }
+    });
+
+    // --- FIX: Translate dynamic legends WITHOUT rebuilding tabs ---
+    const legendTranslations = {
+        "Greens (Nitrogen-Rich)": {en: "Greens (Nitrogen-Rich)", mr: "हिरवा कचरा (नायट्रोजन-समृद्ध)", hi: "हरे (नाइट्रोजन-युक्त)"},
+        "Browns (Carbon-Rich)": {en: "Browns (Carbon-Rich)", mr: "तपकिरी कचरा (कार्बन-समृद्ध)", hi: "भूरे (कार्बन-युक्त)"},
+        "Special Additives": {en: "Special Additives", mr: "विशेष घटक", hi: "विशेष योजक"},
+        "Items to Avoid": {en: "Items to Avoid", mr: "टाळण्याचे पदार्थ", hi: "इन चीजों से बचें"}
+    };
+    document.querySelectorAll('[data-legend-key]').forEach(legend => {
+        const key = legend.getAttribute('data-legend-key');
+        if (legendTranslations[key] && legendTranslations[key][lang]) {
+            legend.textContent = legendTranslations[key][lang];
+        }
+    });
+
+    // Re-render other dynamic content
+    renderMarketplace();
+    renderSellPage();
+}
+
+
+// --- SCREEN NAVIGATION ---
+function showScreen(screenId) {
+    document.querySelectorAll("main > div").forEach(screen => {
+        screen.style.display = "none";
+    });
+    const activeScreen = document.getElementById(screenId);
+    if (activeScreen) {
+        if (screenId === 'login-screen') {
+            activeScreen.style.display = "flex";
+        } else {
+            activeScreen.style.display = "block";
+        }
+    }
+}
+
+
+// --- AUTHENTICATION ---
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function handleRegister() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const messageEl = document.getElementById('auth-message');
+    if (!username || !password) {
+        messageEl.textContent = "Username and password cannot be empty.";
+        messageEl.style.color = 'red';
+        return;
+    }
+    const users = JSON.parse(localStorage.getItem('compostUsers')) || [];
+    if (users.find(user => user.username === username)) {
+        messageEl.textContent = "Username already exists. Please choose another.";
+        messageEl.style.color = 'red';
+        return;
+    }
+    const hashedPassword = await hashPassword(password);
+    users.push({
+        username,
+        hash: hashedPassword
+    });
+    localStorage.setItem('compostUsers', JSON.stringify(users));
+    messageEl.textContent = "Registration successful! You can now log in.";
+    messageEl.style.color = 'green';
+}
+
+async function handleLogin() {
+    const usernameInput = document.getElementById('username');
+    const passwordInput = document.getElementById('password');
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value;
+    const messageEl = document.getElementById('auth-message');
+    if (!username || !password) {
+        messageEl.textContent = "Please enter both username and password.";
+        messageEl.style.color = 'red';
+        return;
+    }
+    const users = JSON.parse(localStorage.getItem('compostUsers')) || [];
+    const user = users.find(u => u.username === username);
+    if (!user) {
+        messageEl.textContent = "Invalid username or password.";
+        messageEl.style.color = 'red';
+        return;
+    }
+    const enteredPasswordHash = await hashPassword(password);
+    if (enteredPasswordHash === user.hash) {
+        messageEl.textContent = "Login successful!";
+        messageEl.style.color = 'green';
+        
+        sessionStorage.setItem('currentUser', user.username);
+        
+        document.getElementById('welcome-message').textContent = `Hi, ${user.username}!`;
+        usernameInput.value = '';
+        passwordInput.value = '';
+        setTimeout(() => showScreen('intro-screen'), 500);
+    } else {
+        messageEl.textContent = "Invalid username or password.";
+        messageEl.style.color = 'red';
+    }
+}
+
+function handleLogout() {
+    sessionStorage.removeItem('currentUser');
+    showScreen('login-screen');
+    document.getElementById('auth-message').textContent = '';
+}
+
+// --- PRODUCT & MARKETPLACE FUNCTIONS ---
+function getAllProducts() {
+    const userAddedProducts = JSON.parse(localStorage.getItem('userProducts')) || [];
+    return [...initialProducts, ...userAddedProducts];
+}
+
+function renderMarketplace() {
+    const allProducts = getAllProducts();
+    const containers = {
+        standard: document.getElementById("standard-blends-container"),
+        vermicompost: document.getElementById("vermicompost-container"),
+        manures: document.getElementById("manures-container")
+    };
+    Object.values(containers).forEach(c => c.innerHTML = "");
+    allProducts.forEach(product => {
+        const productCardHTML = `
+            <div class="product-card" onclick="showDetails('${product.id}', 'buy-screen')">
+                <img src="${product.image || 'https://via.placeholder.com/150?text=No+Image'}" alt="${product.name}" class="product-image">
+                <h4>${product.name}</h4>
+                <p>${product.description.substring(0, 70)}...</p> 
+                <div class="price">${product.price}</div>
+            </div>`;
+        if (containers[product.category]) {
+            containers[product.category].innerHTML += productCardHTML;
+        }
+    });
+}
+
+function renderSellPage() {
+    const lang = localStorage.getItem('language') || 'en';
+    const sellText = { en: "List a ", mr: "एक सूचीबद्ध करा ", hi: "एक सूचीबद्ध करें " };
+    const createListingText = { en: "Create Listing", mr: "सूची तयार करा", hi: "लिस्टिंग बनाएं" };
+
+    const categories = {
+        standard: { name: { en: "Standard Blend", mr: "मानक मिश्रण", hi: "मानक मिश्रण" }, container: document.getElementById("sell-standard-blends-container") },
+        vermicompost: { name: { en: "Vermicompost", mr: "गांडूळ खत", hi: "वर्मीकम्पोस्ट" }, container: document.getElementById("sell-vermicompost-container") },
+        manures: { name: { en: "Manure/Amendment", mr: "खत/सुधारक", hi: "खाद/सुधारक" }, container: document.getElementById("sell-manures-container") }
+    };
+
+    Object.values(categories).forEach(cat => {
+        const categoryKey = Object.keys(categories).find(key => categories[key] === cat);
+        cat.container.innerHTML = `
+            <div class="product-card" onclick="showAddItemForm('${categoryKey}')">
+                <h4>${sellText[lang]}${cat.name[lang]}</h4>
+                <p style="font-size: 2.5em; margin: 20px 0; color: #38761d;">+</p>
+                <button class="action-button" style="width: calc(100% - 30px); margin: 15px;">${createListingText[lang]}</button>
+            </div>`;
+    });
+}
+
+function showDetails(productId, originScreen) {
+    const allProducts = getAllProducts();
+    const product = allProducts.find(p => p.id === productId);
+    if (!product) return;
+
+    document.getElementById("details-image").src = product.image || 'https://via.placeholder.com/300?text=No+Image';
+    document.getElementById("details-name").innerText = product.name;
+    document.getElementById("details-price").innerText = product.price;
+    document.getElementById("details-description").innerText = product.description;
+    document.getElementById("details-back-button").setAttribute("onclick", `showScreen('${originScreen}')`);
+    
+    const actionButton = document.getElementById("details-action-button");
+    const lang = localStorage.getItem('language') || 'en';
+    
+    actionButton.innerText = {en: "Buy Now", mr: "आता खरेदी करा", hi: "अभी खरीदें"}[lang];
+    actionButton.onclick = () => alert(`This would take you to the checkout page for ${product.name}!`);
+
+    const sellerActions = document.getElementById('seller-actions');
+    const deleteButton = document.getElementById('delete-listing-button');
+    const currentUser = sessionStorage.getItem('currentUser');
+
+    if (product.seller && product.seller === currentUser) {
+        sellerActions.style.display = 'block';
+        deleteButton.onclick = () => handleDeleteItem(product.id);
+    } else {
+        sellerActions.style.display = 'none';
+    }
+    
+    showScreen("details-screen");
+}
+
+function handleDeleteItem(productId) {
+    const lang = localStorage.getItem('language') || 'en';
+    const confirmText = {
+        en: "Are you sure you want to delete this listing? This action cannot be undone.",
+        mr: "तुम्हाला ही सूची हटवायची आहे का? ही क्रिया पूर्ववत केली जाऊ शकत नाही.",
+        hi: "क्या आप वाकई इस लिस्टिंग को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।"
+    };
+    const successText = {
+        en: "Listing deleted successfully.",
+        mr: "सूची यशस्वीरित्या हटवली.",
+        hi: "लिस्टिंग सफलतापूर्वक हटा दी गई।"
+    };
+
+    if (confirm(confirmText[lang])) {
+        let userAddedProducts = JSON.parse(localStorage.getItem('userProducts')) || [];
+        const updatedProducts = userAddedProducts.filter(p => p.id !== productId);
+        localStorage.setItem('userProducts', JSON.stringify(updatedProducts));
+        
+        alert(successText[lang]);
+        renderMarketplace();
+        showScreen('buy-screen');
+    }
+}
+
+
+// --- NEW LISTING FORM FUNCTIONS ---
+function showAddItemForm(category) {
+    document.getElementById('listing-form').reset();
+    document.getElementById('listing-preview').style.display = 'none';
+    document.getElementById('listing-preview').src = '';
+    document.getElementById('listing-category').value = category;
+    showScreen('add-listing-screen');
+}
+
+function previewImage(event) {
+    const reader = new FileReader();
+    const preview = document.getElementById('listing-preview');
+    reader.onload = function(){
+        preview.src = reader.result;
+        preview.style.display = 'block';
+    }
+    if (event.target.files[0]) {
+        reader.readAsDataURL(event.target.files[0]);
+    } else {
+        preview.src = '';
+        preview.style.display = 'none';
+    }
+}
+
+async function handleAddItem() {
+    const category = document.getElementById('listing-category').value;
+    const name = document.getElementById('listing-name').value.trim();
+    const price = document.getElementById('listing-price').value.trim();
+    const description = document.getElementById('listing-description').value.trim();
+    const imageFile = document.getElementById('listing-image').files[0];
+    const currentUser = sessionStorage.getItem('currentUser');
+
+    if (!name || !price || !description) {
+        alert("Please fill in all required fields.");
+        return;
+    }
+    if (!currentUser) {
+        alert("You must be logged in to list an item.");
+        return;
+    }
+
+    const readImageAsBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            if (!file) {
+                resolve(null);
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    };
+    
+    const imageData = await readImageAsBase64(imageFile);
+
+    const newItem = {
+        id: `user-${Date.now()}`,
+        category: category,
+        name: name,
+        price: price,
+        description: description,
+        image: imageData,
+        seller: currentUser
+    };
+
+    const userAddedProducts = JSON.parse(localStorage.getItem('userProducts')) || [];
+    userAddedProducts.push(newItem);
+    localStorage.setItem('userProducts', JSON.stringify(userAddedProducts));
+
+    alert("Item listed successfully!");
+    renderMarketplace();
+    showScreen('buy-screen');
+}
+
+
+// --- COMPOST TOOL LOGIC ---
+const masterIngredientList = {
+    fruitPeels: { name: "Fruit & Veggie Scraps", type: "Greens (Nitrogen-Rich)" },
+    coffeeGrounds: { name: "Coffee Grounds", type: "Greens (Nitrogen-Rich)" },
+    teaBags: { name: "Tea Bags/Leaves", type: "Greens (Nitrogen-Rich)" },
+    grassClippings: { name: "Grass Clippings (Fresh)", type: "Greens (Nitrogen-Rich)" },
+    manure: { name: "Manure (Cow, Goat, Poultry)", type: "Greens (Nitrogen-Rich)" },
+    weeds: { name: "Weeds (No seeds)", type: "Greens (Nitrogen-Rich)" },
+    seaweed: { name: "Seaweed/Kelp", type: "Greens (Nitrogen-Rich)" },
+    dryLeaves: { name: "Dry Leaves", type: "Browns (Carbon-Rich)" },
+    shreddedPaper: { name: "Shredded Paper (No gloss)", type: "Browns (Carbon-Rich)" },
+    cardboard: { name: "Cardboard (Shredded)", type: "Browns (Carbon-Rich)" },
+    woodChips: { name: "Wood Chips/Sawdust", type: "Browns (Carbon-Rich)" },
+    straw: { name: "Straw or Hay", type: "Browns (Carbon-Rich)" },
+    pineNeedles: { name: "Pine Needles", type: "Browns (Carbon-Rich)" },
+    dryerLint: { name: "Dryer Lint (Natural fibers)", type: "Browns (Carbon-Rich)" },
+    eggShells: { name: "Egg Shells (Crushed)", type: "Special Additives" },
+    woodAsh: { name: "Wood Ash (Cold)", type: "Special Additives" },
+    lime: { name: "Lime (Dolomite/Garden)", type: "Special Additives" },
+    rockDust: { name: "Rock Dust/Azomite", type: "Special Additives" },
+    meat: { name: "Meat / Dairy / Oils", type: "Items to Avoid" },
+    petWaste: { name: "Pet Waste (Cat/Dog)", type: "Items to Avoid" },
+    diseasedPlants: { name: "Diseased Plants", type: "Items to Avoid" },
+};
+
+const tabContentMapping = {
+    leafy: ['fruitPeels', 'coffeeGrounds', 'teaBags', 'grassClippings', 'manure', 'dryLeaves', 'shreddedPaper', 'straw', 'eggShells', 'rockDust'],
+    root: ['fruitPeels', 'coffeeGrounds', 'manure', 'weeds', 'dryLeaves', 'cardboard', 'woodChips', 'woodAsh', 'rockDust', 'eggShells'],
+    fruiting: ['fruitPeels', 'coffeeGrounds', 'teaBags', 'manure', 'seaweed', 'dryLeaves', 'shreddedPaper', 'straw', 'eggShells', 'woodAsh', 'rockDust'],
+    flowers: ['coffeeGrounds', 'teaBags', 'manure', 'dryLeaves', 'cardboard', 'straw', 'pineNeedles', 'eggShells', 'woodAsh', 'rockDust'],
+    green: ['grassClippings', 'manure', 'weeds', 'fruitPeels', 'coffeeGrounds', 'dryLeaves', 'straw', 'shreddedPaper'],
+    trees: ['fruitPeels', 'manure', 'weeds', 'dryLeaves', 'shreddedPaper', 'cardboard', 'woodChips', 'straw', 'lime', 'rockDust'],
+    general: Object.keys(masterIngredientList).filter(id => !['meat', 'petWaste', 'diseasedPlants'].includes(id)),
+};
+
+
+function populateIngredientTabs() {
+    const tabs = document.querySelectorAll('.tab-panel');
+    
+    tabs.forEach(tab => {
+        const plantType = tab.id;
+        const ingredientIdsToShow = tabContentMapping[plantType];
+        if (!ingredientIdsToShow) return;
+
+        const categorizedIngredients = {};
+        ingredientIdsToShow.forEach(id => {
+            const ingredient = masterIngredientList[id];
+            if (!categorizedIngredients[ingredient.type]) {
+                categorizedIngredients[ingredient.type] = [];
+            }
+            categorizedIngredients[ingredient.type].push(id);
+        });
+        
+        const avoidCategory = "Items to Avoid";
+        categorizedIngredients[avoidCategory] = ['meat', 'petWaste', 'diseasedPlants'];
+
+        let html = '<div class="ingredient-columns">';
+        for (const category in categorizedIngredients) {
+            // Add data-legend-key for translation
+            html += `<fieldset><legend data-legend-key="${category}">${category}</legend>`;
+            categorizedIngredients[category].forEach(id => {
+                const ingredient = masterIngredientList[id];
+                const uniqueId = `${plantType}-${id}`;
+                html += `<input type="checkbox" id="${uniqueId}" name="ingredient" value="${id}"> <label for="${uniqueId}">${ingredient.name}</label><br>`;
+            });
+            html += `</fieldset>`;
+        }
+        html += '</div>';
+        tab.innerHTML = html;
+    });
+}
+
+
+function openTab(evt, tabName) {
+    document.querySelectorAll('.tab-panel').forEach(tab => tab.style.display = "none");
+    document.querySelectorAll('.tab-button').forEach(button => button.className = button.className.replace(" active", ""));
+
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+function generateCompostGuide() {
+    const lang = localStorage.getItem('language') || 'en';
+    const t = translations[lang];
+
+    const activeTab = document.querySelector('.tab-panel:not([style*="display: none"])');
+    if (!activeTab) return;
+
+    const activeButton = document.querySelector('.tab-button.active');
+    const plantType = activeButton.dataset.plantType;
+
+    const selectedCheckboxes = activeTab.querySelectorAll('input[name="ingredient"]:checked');
+    const selectedIngredients = Array.from(selectedCheckboxes).map(cb => cb.value);
+    const resultDiv = document.getElementById("compost-result");
+
+    if (selectedIngredients.length === 0) {
+        resultDiv.innerHTML = `<p style="color: red;">${{en: "Please select at least one ingredient.", mr: "कृपया किमान एक घटक निवडा.", hi: "कृपया कम से कम एक सामग्री चुनें।"}[lang]}</p>`;
+        return;
+    }
+    
+    const ingredientData = {
+        fruitPeels: { name: "Fruit & Veggie Scraps", type: "green", tip: "Chop to accelerate decomposition.", prep: "Chop into 1-inch (2-3 cm) pieces. Smaller pieces break down much faster." },
+        coffeeGrounds: { name: "Coffee Grounds", type: "green", tip: "Excellent nitrogen source, loved by worms.", prep: "No preparation needed. Just add them directly to your greens layer." },
+        teaBags: { name: "Tea Bags/Leaves", type: "green", tip: "Ensure tea bags are plastic-free.", prep: "If using bags, tear them open to release the leaves. Discard any staples or plastic tags." },
+        grassClippings: { name: "Grass Clippings", type: "green", tip: "Add in thin layers to avoid a slimy mat.", prep: "Let fresh clippings dry in the sun for a day to reduce moisture and prevent clumping." },
+        manure: { name: "Manure", type: "green", props: ["microbe-rich"], tip: "Supercharges your pile.", prep: "Break up any large clumps before adding. Use only manure from herbivores (cow, goat, poultry)." },
+        weeds: { name: "Weeds", type: "green", tip: "Ensure they have not gone to seed.", prep: "Shake off excess soil from the roots. It's best to let them wilt in the sun for a day to kill them off before adding." },
+        seaweed: { name: "Seaweed/Kelp", type: "green", props: ["mineral-rich"], tip: "Adds valuable trace minerals.", prep: "Rinse with fresh water to remove excess salt. Chop it up if the pieces are large." },
+        dryLeaves: { name: "Dry Leaves", type: "brown", props: ["fungal-dominant"], tip: "The perfect 'brown' material.", prep: "Shred them by crushing them by hand, putting them in a bag and walking on it, or running a lawnmower over them." },
+        shreddedPaper: { name: "Shredded Paper", type: "brown", tip: "Balances wet 'greens'. Avoid glossy paper.", prep: "Shred into thin strips. If you don't have a shredder, tearing by hand works too." },
+        cardboard: { name: "Cardboard", type: "brown", tip: "Adds great structure and air pockets.", prep: "Shred into small pieces and remove any plastic tape. Soaking it in water for 10 minutes before adding helps it break down faster." },
+        woodChips: { name: "Wood Chips/Sawdust", type: "brown", props: ["fungal-dominant"], tip: "Decomposes slowly, creating fungal-rich compost.", prep: "Use sparingly. Mix well with 'greens' as it can absorb a lot of nitrogen. Best for the foundation layer." },
+        straw: { name: "Straw or Hay", type: "brown", tip: "Prevents compaction and improves airflow.", prep: "No special prep needed, but fluff it up as you add it to create air pockets." },
+        pineNeedles: { name: "Pine Needles", type: "brown", props: ["acidic"], tip: "Use in moderation for most plants.", prep: "No prep needed. They can take a while to break down, which is fine." },
+        dryerLint: { name: "Dryer Lint", type: "brown", tip: "Only use from natural fibers like cotton or wool.", prep: "Pull it apart into smaller pieces before adding to the pile." },
+        eggShells: { name: "Egg Shells", type: "additive", props: ["calcium-boosted"], tip: "Adds calcium, preventing blossom-end rot in tomatoes.", prep: "Rinse and let them dry. Crush them into a fine powder with a mortar and pestle or a rolling pin for fastest results." },
+        woodAsh: { name: "Wood Ash", type: "additive", props: ["potash-rich", "alkaline"], tip: "Use sparingly as it's very alkaline.", prep: "Ensure the ash is completely cold. Sprinkle it very lightly like dusting a cake, not in clumps." },
+        lime: { name: "Lime", type: "additive", props: ["calcium-boosted", "alkaline"], tip: "Balances pH, but use with caution.", prep: "Sprinkle a very small amount (a small handful for a large pile) if your compost is too acidic (smells sour)." },
+        rockDust: { name: "Rock Dust", type: "additive", props: ["mineral-rich"], tip: "Adds a broad spectrum of trace minerals.", prep: "Lightly dust a small amount onto your 'green' layers as you build the pile." },
+        meat: { type: "warning", warning: "Attracts pests and can harbor pathogens. Avoid in home compost." },
+        petWaste: { type: "warning", warning: "Can contain harmful parasites. Do not add to your compost." },
+        diseasedPlants: { type: "warning", warning: "Can spread plant diseases back into your garden." }
+    };
+
+    let greenCount = 0, brownCount = 0;
+    let nameParts = [], selectedGreens = [], selectedBrowns = [], selectedAdditives = [], prepSteps = [], specificTips = [], warnings = [];
+
+    selectedIngredients.forEach(ing => {
+        const data = ingredientData[ing];
+        if (!data) return;
+        if (data.type === "green") { greenCount++; selectedGreens.push(data.name); }
+        else if (data.type === "brown") { brownCount++; selectedBrowns.push(data.name); }
+        else if (data.type === "additive") { selectedAdditives.push(data.name); }
+        
+        if (data.props) data.props.forEach(prop => { if (!nameParts.includes(prop)) nameParts.push(prop); });
+        if (data.prep) prepSteps.push(`<li><strong>${data.name}:</strong> ${data.prep}</li>`);
+        if (data.tip) specificTips.push(`<li><strong>${data.name}:</strong> ${data.tip}</li>`);
+        if (data.warning) warnings.push(data.warning);
+    });
+
+    let coreName = "Balanced Garden Gold";
+    let recipeRatio = "Use roughly <strong>2 parts Browns to 1 part Greens</strong> by volume. This is the ideal ratio for hot composting.";
+    const balanceRatio = greenCount / (brownCount || 1);
+    if (balanceRatio > 1.5) {
+        coreName = "Nitrogen Power Mix";
+        recipeRatio = "Your mix is high in nitrogen. To balance it, use <strong>3 parts Browns to 1 part Greens</strong> by volume.";
+    } else if (balanceRatio < 0.7) {
+        coreName = "Carbon Sponge Blend";
+        recipeRatio = "Your mix is high in carbon. To balance it, use roughly <strong>equal parts Browns and Greens</strong> by volume.";
+    }
+
+    const prefix = nameParts.map(p => p.split("-").map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(" ")).join(", ");
+    const compostName = (prefix ? prefix + " " : "") + coreName;
+
+    let plantGoal = "";
+    switch (plantType) {
+        case "fruiting": plantGoal = "for Fruiting & Flowering Crops"; break;
+        case "leafy": plantGoal = "for Leafy Vegetables"; break;
+        case "root": plantGoal = "for Root Crops"; break;
+        case "flowers": plantGoal = "for Vibrant Flower Gardens"; break;
+        case "green": plantGoal = "for Green Crops (like lawns)"; break;
+        case "trees": plantGoal = "for Fruit Trees"; break;
+        default: plantGoal = "General Purpose Soil Conditioner"; break;
+    }
+
+    let htmlParts = [`<h2>${t.guideRecipeTitle} ${compostName}</h2>`, `<p><strong>${t.guidePrimaryGoal}</strong> A high-quality <strong>${plantGoal}</strong>.</p><hr>`, `<h3><span style="font-size: 1.5em;">📜</span> ${t.guideYourRecipe}</h3>`, `<p><strong>${t.guideLayeringRatio}</strong> ${recipeRatio}</p>`];
+    let ingredientsList = [];
+    if (selectedGreens.length > 0) ingredientsList.push(`<li><strong>${t.guideGreens}</strong> ${selectedGreens.join(", ")}</li>`);
+    if (selectedBrowns.length > 0) ingredientsList.push(`<li><strong>${t.guideBrowns}</strong> ${selectedBrowns.join(", ")}</li>`);
+    if (selectedAdditives.length > 0) ingredientsList.push(`<li><strong>${t.guideAdditives}</strong> ${selectedAdditives.join(", ")}</li>`);
+    if (ingredientsList.length > 0) htmlParts.push("<ul>" + ingredientsList.join("") + "</ul>");
+
+    if (prepSteps.length > 0) {
+        htmlParts.push(`<hr><h3><span style="font-size: 1.5em;">✂️</span> ${t.guidePrepTitle}</h3><ol>${prepSteps.join('')}</ol>`);
+    }
+
+    htmlParts.push(`<hr><h3><span style="font-size: 1.5em;">⚙️</span> ${t.guideProcessTitle}</h3>`);
+    
+    let processSteps = [
+        `<li><strong>${t.guideStep1}</strong> 🧱 ${ {en: "Start with a 4-6 inch layer of your bulkiest 'Browns' at the bottom to ensure good airflow.", mr: "चांगल्या हवा-प्रवाहासाठी तळाशी तुमच्या सर्वात मोठ्या 'तपकिरी' कचऱ्याचा ४-६ इंचाचा थर लावा.", hi: "अच्छी वायु प्रवाह सुनिश्चित करने के लिए नीचे अपनी सबसे भारी 'भूरी' सामग्री की ४-६ इंच की परत से शुरू करें।"}[lang] }</li>`,
+        `<li><strong>${t.guideStep2}</strong> 🍝 ${ {en: "Add materials in thin, alternating layers (2-3 inches of Greens, then 4-6 inches of Browns). Lightly spray each layer with water until moist like a wrung-out sponge.", mr: "पातळ, पर्यायी थरांमध्ये साहित्य जोडा (२-३ इंच हिरवा कचरा, नंतर ४-६ इंच तपकिरी कचरा). प्रत्येक थरावर पिळून काढलेल्या स्पंजसारखे ओलसर होईपर्यंत हलकेच पाणी फवारा.", hi: "पतली, वैकल्पिक परतों में सामग्री डालें (२-३ इंच हरी सामग्री, फिर ४-६ इंच भूरी सामग्री)। प्रत्येक परत पर तब तक हल्का पानी स्प्रे करें जब तक कि वह निचोड़े हुए स्पंज की तरह नम न हो जाए।"}[lang] }</li>`,
+        selectedIngredients.includes("manure") ? `<li><strong>${t.guideStep3_manure}</strong> 🔥 ${ {en: "Sprinkle a handful of your manure into the center of the pile every few layers to activate and heat it up.", mr: "कंपोस्ट सक्रिय करण्यासाठी आणि गरम करण्यासाठी प्रत्येक काही थरांनंतर ढिगाच्या मध्यभागी मूठभर खत शिंपडा.", hi: "ढेर को सक्रिय करने और गर्म करने के लिए हर कुछ परतों के बाद ढेर के केंद्र में मुट्ठी भर खाद छिड़कें।"}[lang] }</li>` : "",
+        `<li><strong>${t.guideStep4}</strong> 🛌 ${ {en: "Always finish with a final, thick layer of 'Browns' on top to insulate the pile and prevent pests or odors.", mr: "कंपोस्टला उष्णतारोधक करण्यासाठी आणि कीटक किंवा दुर्गंधी टाळण्यासाठी नेहमी वर 'तपकिरी' कचऱ्याचा जाड थर द्या.", hi: "ढेर को इन्सुलेट करने और कीटों या गंध को रोकने के लिए हमेशा ऊपर 'भूरी' सामग्री की एक मोटी अंतिम परत के साथ समाप्त करें।"}[lang] }</li>`,
+        `<li><strong>${t.guideStep5}</strong> 🔄 ${ {en: "Every 7-10 days, use a pitchfork to mix the pile thoroughly for about 5 minutes. Move materials from the outside to the center and shake any large clumps loose.", mr: "प्रत्येक ७-१० दिवसांनी, फावड्याने ढिगारा सुमारे ५ मिनिटे पूर्णपणे मिसळा. बाहेरील साहित्य मध्यभागी हलवा आणि मोठे गोळे मोकळे करा.", hi: "हर ७-१० दिनों में, ढेर को लगभग ५ मिनट तक अच्छी तरह से मिलाने के लिए पिचफोर्क का उपयोग करें। बाहरी सामग्री को केंद्र में ले जाएं और किसी भी बड़े गुच्छे को ढीला करें।"}[lang] }</li>`,
+        `<li><strong>${t.guideStep6}</strong> ✅ ${ {en: "Your compost is ready in 2-4 months when it's dark, crumbly, and smells like rich earth.", mr: "तुमचे कंपोस्ट २-४ महिन्यांत तयार होते, जेव्हा ते गडद, भुसभुशीत आणि मातीसारखे सुगंधित होते.", hi: "आपकी खाद २-४ महीनों में तैयार हो जाती है जब यह गहरी, भुरभुरी और मिट्टी जैसी महक वाली हो जाती है।"}[lang] }</li>`
+    ];
+    htmlParts.push("<ol>" + processSteps.filter(Boolean).join("") + "</ol>");
+
+    if (specificTips.length > 0) {
+        htmlParts.push(`<hr><h3><span style="font-size: 1.5em;">🌿</span> ${t.guideTipsTitle}</h3><ul>${specificTips.join('')}</ul>`);
+    }
+    if (warnings.length > 0) {
+        htmlParts.push(`<hr><h3 style="color: red;">${t.guideWarningsTitle}</h3><ul>${warnings.map(warning => `<li style="color: red;">${warning}</li>`).join('')}</ul>`);
+    }
+    resultDiv.innerHTML = htmlParts.join("");
+}
+    </script>
+</body>
+</html>
